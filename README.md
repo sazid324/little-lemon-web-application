@@ -1,1 +1,2 @@
-# little-lemon-web-application
+/api/bookings/
+/api/registration/

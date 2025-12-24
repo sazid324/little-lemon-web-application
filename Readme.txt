@@ -7,7 +7,6 @@ FEATURES:
 - Menu API for browsing restaurant items
 - Table Booking API for managing reservations
 - User-specific booking management
-- Comprehensive unit tests
 - MySQL database integration
 
 API ENDPOINTS:

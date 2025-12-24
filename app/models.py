@@ -1,8 +1,8 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+
 
 class Menu(models.Model):
-    """Model for menu items in the restaurant"""
     title = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     inventory = models.IntegerField(default=0)
@@ -15,7 +15,6 @@ class Menu(models.Model):
 
 
 class Booking(models.Model):
-    """Model for table bookings"""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     no_of_guests = models.IntegerField()

@@ -1,6 +1,7 @@
-Django==6.0
+Django==5.0
 djangorestframework==3.16.1
 PyMySQL==1.1.0
+cryptography==41.0.7
 asgiref==3.11.0
 sqlparse==0.5.5
 tzdata==2025.3

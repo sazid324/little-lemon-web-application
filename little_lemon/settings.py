@@ -11,13 +11,16 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
-import pymysql
-
-# Ensure PyMySQL is used for MySQL connections
-pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Configure PyMySQL as MySQLdb
+try:
+    import pymysql
+    pymysql.install_as_MySQLdb()
+except ImportError:
+    pass
 
 
 # Quick-start development settings - unsuitable for production
@@ -88,6 +91,9 @@ DATABASES = {
         "PASSWORD": "password",
         "HOST": "localhost",
         "PORT": "3306",
+        "OPTIONS": {
+            "init_command": "SET time_zone = '+06:00'",
+        },
     }
 }
 

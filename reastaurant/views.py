@@ -1,9 +1,8 @@
 from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
 from rest_framework import status, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, BasePermission, IsAuthenticated
 from rest_framework.response import Response
 
 from .models import Booking, Menu
@@ -15,15 +14,23 @@ from .serializers import (
 )
 
 
+class IsStaffUser(BasePermission):
+    def has_permission(self, request, view):
+        if request.method == "GET":
+            return True
+        return request.user and request.user.is_authenticated and request.user.is_staff
+
+
 class MenuView(viewsets.ModelViewSet):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
+    permission_classes = [IsStaffUser]
 
     def get_permissions(self):
         if self.request.method == "GET":
             self.permission_classes = [AllowAny]
         else:
-            self.permission_classes = [IsAuthenticated]
+            self.permission_classes = [IsStaffUser]
         return super().get_permissions()
 
 

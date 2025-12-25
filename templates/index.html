@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Little Lemon Restaurant</title>
+		{% csrf_token %}
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			body {
+				font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+				line-height: 1.6;
+				color: #333;
+			}
+
+			header {
+				background-color: #495e57;
+				color: white;
+				padding: 1rem 0;
+				text-align: center;
+			}
+
+			nav {
+				background-color: #f4ce14;
+				padding: 1rem;
+				text-align: center;
+			}
+
+			nav a {
+				margin: 0 1rem;
+				text-decoration: none;
+				color: #495e57;
+				font-weight: bold;
+			}
+
+			nav a:hover {
+				text-decoration: underline;
+			}
+
+			.container {
+				max-width: 1200px;
+				margin: 2rem auto;
+				padding: 0 1rem;
+			}
+
+			.hero {
+				background-color: #495e57;
+				color: white;
+				padding: 3rem;
+				border-radius: 8px;
+				text-align: center;
+				margin-bottom: 2rem;
+			}
+
+			.hero h1 {
+				font-size: 2.5rem;
+				margin-bottom: 1rem;
+			}
+
+			.hero p {
+				font-size: 1.1rem;
+			}
+
+			.sections {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+				gap: 2rem;
+				margin: 2rem 0;
+			}
+
+			.card {
+				border: 1px solid #ddd;
+				padding: 2rem;
+				border-radius: 8px;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+			}
+
+			.card h2 {
+				color: #495e57;
+				margin-bottom: 1rem;
+			}
+
+			.api-tester {
+				background-color: #f9f9f9;
+				padding: 2rem;
+				border-radius: 8px;
+				margin-top: 3rem;
+				border: 2px solid #495e57;
+			}
+
+			.api-tester h2 {
+				color: #495e57;
+				margin-bottom: 1.5rem;
+			}
+
+			.form-group {
+				margin-bottom: 1.5rem;
+			}
+
+			.form-group label {
+				display: block;
+				font-weight: bold;
+				margin-bottom: 0.5rem;
+				color: #495e57;
+			}
+
+			.form-group input,
+			.form-group textarea,
+			.form-group select {
+				width: 100%;
+				padding: 0.75rem;
+				border: 1px solid #ddd;
+				border-radius: 4px;
+				font-size: 1rem;
+				font-family: inherit;
+			}
+
+			.form-group textarea {
+				resize: vertical;
+				min-height: 100px;
+			}
+
+			button {
+				background-color: #495e57;
+				color: white;
+				padding: 0.75rem 1.5rem;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+				font-size: 1rem;
+				font-weight: bold;
+			}
+
+			button:hover {
+				background-color: #f4ce14;
+				color: #495e57;
+			}
+
+			.response-box {
+				background-color: #fff;
+				border: 1px solid #ddd;
+				padding: 1rem;
+				border-radius: 4px;
+				margin-top: 1rem;
+				max-height: 300px;
+				overflow-y: auto;
+				font-family: "Courier New", monospace;
+				font-size: 0.9rem;
+				white-space: pre-wrap;
+				word-wrap: break-word;
+			}
+
+			.error {
+				color: #d9534f;
+				background-color: #f2dede;
+				padding: 1rem;
+				border-radius: 4px;
+				margin-top: 1rem;
+			}
+
+			.success {
+				color: #3c763d;
+				background-color: #dff0d8;
+				padding: 1rem;
+				border-radius: 4px;
+				margin-top: 1rem;
+			}
+
+			footer {
+				background-color: #495e57;
+				color: white;
+				text-align: center;
+				padding: 2rem;
+				margin-top: 3rem;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1>Little Lemon Restaurant</h1>
+		</header>
+
+		<nav>
+			<a href="#menu">Menu</a>
+			<a href="#bookings">Bookings</a>
+			<a href="#about">About</a>
+			<a href="/api/">API</a>
+		</nav>
+
+		<div class="container">
+			<div class="hero">
+				<h1>Welcome to Little Lemon</h1>
+				<p>
+					Experience authentic Mediterranean cuisine in a warm, inviting
+					atmosphere
+				</p>
+			</div>
+
+			<div class="sections">
+				<div class="card">
+					<h2 id="menu">🍽️ Our Menu</h2>
+					<p>
+						Discover our carefully curated menu featuring fresh, locally-sourced
+						ingredients prepared by our talented chefs.
+					</p>
+					<p><a href="/api/menu/">View Full Menu →</a></p>
+				</div>
+
+				<div class="card">
+					<h2 id="bookings">📅 Make a Reservation</h2>
+					<p>
+						Reserve your table for an unforgettable dining experience. Book
+						online easily and securely.
+					</p>
+					<p><a href="/api/bookings/">Book Now →</a></p>
+				</div>
+
+				<div class="card">
+					<h2>⚙️ Admin Panel</h2>
+					<p>
+						Access the Django admin interface to manage menu items, bookings,
+						users, and other site content.
+					</p>
+					<p><a href="/admin/">Go to Admin →</a></p>
+				</div>
+
+				<div class="card">
+					<h2>🔐 Token Authentication</h2>
+					<p>
+						Obtain authentication tokens for API access. Use the API Tester
+						below to test this endpoint.
+					</p>
+					<p><strong>Endpoint:</strong> <code>/api-token-auth/</code></p>
+				</div>
+
+				<div class="card">
+					<h2>👤 User Management</h2>
+					<p>
+						Manage your user account with registration, login, password reset,
+						and profile management features.
+					</p>
+					<p><a href="/api/auth/">User Management →</a></p>
+				</div>
+
+				<div class="card">
+					<h2 id="about">ℹ️ About Us</h2>
+					<p>
+						Little Lemon has been serving the finest Mediterranean dishes to our
+						beloved community.
+					</p>
+				</div>
+			</div>
+
+			<div class="api-tester">
+				<h2>🧪 API Tester</h2>
+				<p>
+					Test all API endpoints directly from this interface without using
+					third-party tools.
+				</p>
+
+				<div class="form-group">
+					<label for="apiEndpoint">Select API Endpoint:</label>
+					<select id="apiEndpoint" onchange="updateForm()">
+						<option value="">-- Choose an endpoint --</option>
+						<option value="menu">GET /api/menu/ - List Menu Items</option>
+						<option value="bookings">GET /api/bookings/ - List Bookings</option>
+						<option value="token-auth">
+							POST /api-token-auth/ - Get Token
+						</option>
+						<option value="auth-users">
+							GET /api/auth/users/ - List Users (requires auth)
+						</option>
+						<option value="auth-register">
+							POST /api/auth/users/ - Register User
+						</option>
+					</select>
+				</div>
+
+				<div id="dynamicForm"></div>
+
+				<button onclick="testAPI()">Send Request</button>
+
+				<div id="response"></div>
+			</div>
+		</div>
+
+		<footer>
+			<p>&copy; 2024 Little Lemon Restaurant. All rights reserved.</p>
+			<p>Contact: info@littlelemon.com | Phone: (555) 123-4567</p>
+		</footer>
+
+		<script>
+			function getCSRFToken() {
+				const name = "csrftoken";
+				let cookieValue = null;
+				if (document.cookie && document.cookie !== "") {
+					const cookies = document.cookie.split(";");
+					for (let i = 0; i < cookies.length; i++) {
+						const cookie = cookies[i].trim();
+						if (cookie.substring(0, name.length + 1) === name + "=") {
+							cookieValue = decodeURIComponent(
+								cookie.substring(name.length + 1)
+							);
+							break;
+						}
+					}
+				}
+				return cookieValue;
+			}
+
+			function updateForm() {
+				const endpoint = document.getElementById("apiEndpoint").value;
+				const dynamicForm = document.getElementById("dynamicForm");
+				dynamicForm.innerHTML = "";
+
+				if (endpoint === "token-auth") {
+					dynamicForm.innerHTML = `
+						<div class="form-group">
+							<label for="username">Username:</label>
+							<input type="text" id="username" placeholder="Enter your username">
+						</div>
+						<div class="form-group">
+							<label for="password">Password:</label>
+							<input type="password" id="password" placeholder="Enter your password">
+						</div>
+					`;
+				} else if (endpoint === "auth-register") {
+					dynamicForm.innerHTML = `
+						<div class="form-group">
+							<label for="reg-username">Username:</label>
+							<input type="text" id="reg-username" placeholder="Enter username">
+						</div>
+						<div class="form-group">
+							<label for="reg-password">Password:</label>
+							<input type="password" id="reg-password" placeholder="Enter password">
+						</div>
+						<div class="form-group">
+							<label for="reg-email">Email:</label>
+							<input type="email" id="reg-email" placeholder="Enter email">
+						</div>
+					`;
+				} else if (endpoint === "auth-users") {
+					dynamicForm.innerHTML = `
+						<div class="form-group">
+							<label for="token">Auth Token (required):</label>
+							<input type="text" id="token" placeholder="Paste your auth token here">
+						</div>
+					`;
+				}
+			}
+
+			async function testAPI() {
+				const endpoint = document.getElementById("apiEndpoint").value;
+				const responseDiv = document.getElementById("response");
+
+				if (!endpoint) {
+					responseDiv.innerHTML =
+						'<div class="error">Please select an endpoint</div>';
+					return;
+				}
+
+				let url = "";
+				let method = "GET";
+				let body = null;
+				let headers = {
+					"Content-Type": "application/json",
+				};
+
+				try {
+					switch (endpoint) {
+						case "menu":
+							url = "/api/menu/";
+							break;
+						case "bookings":
+							url = "/api/bookings/";
+							break;
+						case "token-auth":
+							url = "/api-token-auth/";
+							method = "POST";
+							const username = document.getElementById("username").value;
+							const password = document.getElementById("password").value;
+							if (!username || !password) {
+								responseDiv.innerHTML =
+									'<div class="error">Please enter username and password</div>';
+								return;
+							}
+							body = JSON.stringify({ username, password });
+							headers["X-CSRFToken"] = getCSRFToken();
+							break;
+						case "auth-users":
+							url = "/api/auth/users/";
+							const token = document.getElementById("token").value;
+							if (!token) {
+								responseDiv.innerHTML =
+									'<div class="error">Please enter your auth token</div>';
+								return;
+							}
+							headers["Authorization"] = `Token ${token}`;
+							break;
+						case "auth-register":
+							url = "/api/auth/users/";
+							method = "POST";
+							const regUsername = document.getElementById("reg-username").value;
+							const regPassword = document.getElementById("reg-password").value;
+							const regEmail = document.getElementById("reg-email").value;
+							if (!regUsername || !regPassword || !regEmail) {
+								responseDiv.innerHTML =
+									'<div class="error">Please fill all registration fields</div>';
+								return;
+							}
+							body = JSON.stringify({
+								username: regUsername,
+								password: regPassword,
+								email: regEmail,
+							});
+							headers["X-CSRFToken"] = getCSRFToken();
+							break;
+					}
+
+					responseDiv.innerHTML = '<div class="success">Loading...</div>';
+
+					const response = await fetch(url, {
+						method: method,
+						headers: headers,
+						body: body,
+					});
+
+					const data = await response.json();
+
+					if (response.ok) {
+						responseDiv.innerHTML = `
+							<div class="success">
+								<strong>Status: ${response.status} ${response.statusText}</strong>
+								<div class="response-box">${JSON.stringify(data, null, 2)}</div>
+							</div>
+						`;
+					} else {
+						responseDiv.innerHTML = `
+							<div class="error">
+								<strong>Status: ${response.status} ${response.statusText}</strong>
+								<div class="response-box">${JSON.stringify(data, null, 2)}</div>
+							</div>
+						`;
+					}
+				} catch (error) {
+					responseDiv.innerHTML = `
+						<div class="error">
+							<strong>Error:</strong>
+							<div class="response-box">${error.message}</div>
+						</div>
+					`;
+				}
+			}
+
+			// Allow Enter key to trigger API test
+			document.addEventListener("keypress", function (e) {
+				if (
+					e.key === "Enter" &&
+					document.activeElement.tagName !== "TEXTAREA"
+				) {
+					testAPI();
+				}
+			});
+		</script>
+	</body>
+</html>

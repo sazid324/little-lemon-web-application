@@ -1,5 +1,5 @@
 """
-URL configuration for little_lemon project.
+URL configuration for littlelemon project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/6.0/topics/http/urls/
@@ -16,9 +16,20 @@ Including another URLconf
 """
 
 from django.contrib import admin
+from django.shortcuts import render
 from django.urls import include, path
+from rest_framework.authtoken.views import obtain_auth_token
+
+
+def index(request):
+    """Render the home page"""
+    return render(request, "index.html")
+
 
 urlpatterns = [
+    path("", index, name="index"),
     path("admin/", admin.site.urls),
-    path("api/", include("app.urls")),
+    path("api-token-auth/", obtain_auth_token, name="api_token_auth"),
+    path("api/auth/", include("djoser.urls")),
+    path("api/", include("reastaurant.urls")),
 ]

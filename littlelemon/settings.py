@@ -62,6 +62,12 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+# CSRF settings for API
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
+
 ROOT_URLCONF = "littlelemon.urls"
 
 TEMPLATES = [

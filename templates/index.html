@@ -203,21 +203,37 @@
 
 			<div class="sections">
 				<div class="card">
-					<h2 id="menu">🍽️ Our Menu</h2>
-					<p>
-						Discover our carefully curated menu featuring fresh, locally-sourced
-						ingredients prepared by our talented chefs.
-					</p>
-					<p><a href="/api/menu/">View Full Menu →</a></p>
+					<h2 id="menu">🍽️ Menu API</h2>
+					<p><strong>Base Path:</strong> <code>/api/menu/</code></p>
+					<ul style="margin-left: 1.5rem; margin-top: 1rem">
+						<li>GET /api/menu/ - List all items</li>
+						<li>GET /api/menu/{id}/ - Get item details</li>
+						<li>POST /api/menu/ - Create item (auth)</li>
+						<li>PUT /api/menu/{id}/ - Update item (auth)</li>
+						<li>DELETE /api/menu/{id}/ - Delete item (auth)</li>
+					</ul>
 				</div>
 
 				<div class="card">
-					<h2 id="bookings">📅 Make a Reservation</h2>
-					<p>
-						Reserve your table for an unforgettable dining experience. Book
-						online easily and securely.
-					</p>
-					<p><a href="/api/bookings/">Book Now →</a></p>
+					<h2 id="bookings">📅 Bookings API</h2>
+					<p><strong>Base Path:</strong> <code>/api/bookings/</code></p>
+					<ul style="margin-left: 1.5rem; margin-top: 1rem">
+						<li>GET /api/bookings/ - List your bookings (auth)</li>
+						<li>GET /api/bookings/{id}/ - Get booking details (auth)</li>
+						<li>POST /api/bookings/ - Create booking (auth)</li>
+						<li>PUT /api/bookings/{id}/ - Update booking (auth)</li>
+						<li>DELETE /api/bookings/{id}/ - Delete booking (auth)</li>
+					</ul>
+				</div>
+
+				<div class="card">
+					<h2>🔐 Authentication API</h2>
+					<p><strong>Endpoints:</strong></p>
+					<ul style="margin-left: 1.5rem; margin-top: 1rem">
+						<li>POST /api/auth/register/ - Register user</li>
+						<li>POST /api/auth/login/ - Login & get token</li>
+						<li>POST /api-token-auth/ - Get auth token</li>
+					</ul>
 				</div>
 
 				<div class="card">
@@ -230,21 +246,11 @@
 				</div>
 
 				<div class="card">
-					<h2>🔐 Token Authentication</h2>
-					<p>
-						Obtain authentication tokens for API access. Use the API Tester
-						below to test this endpoint.
-					</p>
-					<p><strong>Endpoint:</strong> <code>/api-token-auth/</code></p>
-				</div>
-
-				<div class="card">
-					<h2>👤 User Management</h2>
-					<p>
-						Manage your user account with registration, login, password reset,
-						and profile management features.
-					</p>
-					<p><a href="/api/auth/">User Management →</a></p>
+					<h2>📚 API Documentation</h2>
+					<p><strong>Base URL:</strong> <code>http://localhost:8000</code></p>
+					<p>All authenticated endpoints require:</p>
+					<p><code>Authorization: Token YOUR_TOKEN</code></p>
+					<p><a href="/api/">View Full API →</a></p>
 				</div>
 
 				<div class="card">
@@ -267,17 +273,49 @@
 					<label for="apiEndpoint">Select API Endpoint:</label>
 					<select id="apiEndpoint" onchange="updateForm()">
 						<option value="">-- Choose an endpoint --</option>
-						<option value="menu">GET /api/menu/ - List Menu Items</option>
-						<option value="bookings">GET /api/bookings/ - List Bookings</option>
-						<option value="token-auth">
-							POST /api-token-auth/ - Get Token
-						</option>
-						<option value="auth-users">
-							GET /api/auth/users/ - List Users (requires auth)
-						</option>
-						<option value="auth-register">
-							POST /api/auth/users/ - Register User
-						</option>
+						<optgroup label="Authentication">
+							<option value="register">
+								POST /api/auth/register/ - Register User
+							</option>
+							<option value="login">POST /api/auth/login/ - Login User</option>
+							<option value="token-auth">
+								POST /api-token-auth/ - Get Token
+							</option>
+						</optgroup>
+						<optgroup label="Menu (no auth required for GET)">
+							<option value="menu-list">
+								GET /api/menu/ - List Menu Items
+							</option>
+							<option value="menu-detail">
+								GET /api/menu/{id}/ - Get Menu Item
+							</option>
+							<option value="menu-create">
+								POST /api/menu/ - Create Menu Item
+							</option>
+							<option value="menu-update">
+								PUT /api/menu/{id}/ - Update Menu Item
+							</option>
+							<option value="menu-delete">
+								DELETE /api/menu/{id}/ - Delete Menu Item
+							</option>
+						</optgroup>
+						<optgroup label="Bookings (auth required)">
+							<option value="bookings-list">
+								GET /api/bookings/ - List Bookings
+							</option>
+							<option value="bookings-detail">
+								GET /api/bookings/{id}/ - Get Booking
+							</option>
+							<option value="bookings-create">
+								POST /api/bookings/ - Create Booking
+							</option>
+							<option value="bookings-update">
+								PUT /api/bookings/{id}/ - Update Booking
+							</option>
+							<option value="bookings-delete">
+								DELETE /api/bookings/{id}/ - Delete Booking
+							</option>
+						</optgroup>
 					</select>
 				</div>
 
@@ -318,39 +356,192 @@
 				const dynamicForm = document.getElementById("dynamicForm");
 				dynamicForm.innerHTML = "";
 
-				if (endpoint === "token-auth") {
-					dynamicForm.innerHTML = `
-						<div class="form-group">
-							<label for="username">Username:</label>
-							<input type="text" id="username" placeholder="Enter your username">
-						</div>
-						<div class="form-group">
-							<label for="password">Password:</label>
-							<input type="password" id="password" placeholder="Enter your password">
-						</div>
-					`;
-				} else if (endpoint === "auth-register") {
-					dynamicForm.innerHTML = `
-						<div class="form-group">
-							<label for="reg-username">Username:</label>
-							<input type="text" id="reg-username" placeholder="Enter username">
-						</div>
-						<div class="form-group">
-							<label for="reg-password">Password:</label>
-							<input type="password" id="reg-password" placeholder="Enter password">
-						</div>
-						<div class="form-group">
-							<label for="reg-email">Email:</label>
-							<input type="email" id="reg-email" placeholder="Enter email">
-						</div>
-					`;
-				} else if (endpoint === "auth-users") {
-					dynamicForm.innerHTML = `
-						<div class="form-group">
-							<label for="token">Auth Token (required):</label>
-							<input type="text" id="token" placeholder="Paste your auth token here">
-						</div>
-					`;
+				switch (endpoint) {
+					case "register":
+						dynamicForm.innerHTML = `
+							<div class="form-group">
+								<label for="reg-username">Username:</label>
+								<input type="text" id="reg-username" placeholder="Enter username">
+							</div>
+							<div class="form-group">
+								<label for="reg-password">Password:</label>
+								<input type="password" id="reg-password" placeholder="Enter password">
+							</div>
+							<div class="form-group">
+								<label for="reg-email">Email:</label>
+								<input type="email" id="reg-email" placeholder="Enter email">
+							</div>
+							<div class="form-group">
+								<label for="reg-first-name">First Name:</label>
+								<input type="text" id="reg-first-name" placeholder="Enter first name">
+							</div>
+							<div class="form-group">
+								<label for="reg-last-name">Last Name:</label>
+								<input type="text" id="reg-last-name" placeholder="Enter last name">
+							</div>
+						`;
+						break;
+					case "login":
+						dynamicForm.innerHTML = `
+							<div class="form-group">
+								<label for="login-username">Username:</label>
+								<input type="text" id="login-username" placeholder="Enter your username">
+							</div>
+							<div class="form-group">
+								<label for="login-password">Password:</label>
+								<input type="password" id="login-password" placeholder="Enter your password">
+							</div>
+						`;
+						break;
+					case "token-auth":
+						dynamicForm.innerHTML = `
+							<div class="form-group">
+								<label for="username">Username:</label>
+								<input type="text" id="username" placeholder="Enter your username">
+							</div>
+							<div class="form-group">
+								<label for="password">Password:</label>
+								<input type="password" id="password" placeholder="Enter your password">
+							</div>
+						`;
+						break;
+					case "menu-detail":
+					case "menu-update":
+					case "menu-delete":
+						dynamicForm.innerHTML = `
+							<div class="form-group">
+								<label for="menu-id">Menu Item ID:</label>
+								<input type="number" id="menu-id" placeholder="Enter item ID">
+							</div>
+						`;
+						if (endpoint === "menu-update") {
+							dynamicForm.innerHTML += `
+								<div class="form-group">
+									<label for="menu-title">Title:</label>
+									<input type="text" id="menu-title" placeholder="Enter item title">
+								</div>
+								<div class="form-group">
+									<label for="menu-price">Price:</label>
+									<input type="number" id="menu-price" step="0.01" placeholder="Enter item price">
+								</div>
+								<div class="form-group">
+									<label for="menu-inventory">Inventory:</label>
+									<input type="number" id="menu-inventory" placeholder="Enter inventory count">
+								</div>
+								<div class="form-group">
+									<label for="menu-token">Auth Token (required):</label>
+									<input type="text" id="menu-token" placeholder="Paste your auth token here">
+								</div>
+							`;
+						} else if (endpoint === "menu-delete") {
+							dynamicForm.innerHTML += `
+								<div class="form-group">
+									<label for="menu-token">Auth Token (required):</label>
+									<input type="text" id="menu-token" placeholder="Paste your auth token here">
+								</div>
+							`;
+						}
+						break;
+					case "menu-create":
+						dynamicForm.innerHTML = `
+							<div class="form-group">
+								<label for="menu-title">Title:</label>
+								<input type="text" id="menu-title" placeholder="Enter item title">
+							</div>
+							<div class="form-group">
+								<label for="menu-price">Price:</label>
+								<input type="number" id="menu-price" step="0.01" placeholder="Enter item price">
+							</div>
+							<div class="form-group">
+								<label for="menu-inventory">Inventory:</label>
+								<input type="number" id="menu-inventory" placeholder="Enter inventory count">
+							</div>
+							<div class="form-group">
+								<label for="menu-token">Auth Token (required):</label>
+								<input type="text" id="menu-token" placeholder="Paste your auth token here">
+							</div>
+						`;
+						break;
+					case "bookings-list":
+						dynamicForm.innerHTML = `
+							<div class="form-group">
+								<label for="booking-token">Auth Token (required):</label>
+								<input type="text" id="booking-token" placeholder="Paste your auth token here">
+							</div>
+						`;
+						break;
+					case "bookings-detail":
+					case "bookings-update":
+					case "bookings-delete":
+						dynamicForm.innerHTML = `
+							<div class="form-group">
+								<label for="booking-id">Booking ID:</label>
+								<input type="number" id="booking-id" placeholder="Enter booking ID">
+							</div>
+						`;
+						if (endpoint === "bookings-update") {
+							dynamicForm.innerHTML += `
+								<div class="form-group">
+									<label for="booking-name">Name:</label>
+									<input type="text" id="booking-name" placeholder="Enter guest name">
+								</div>
+								<div class="form-group">
+									<label for="booking-guests">Number of Guests:</label>
+									<input type="number" id="booking-guests" placeholder="Enter number of guests">
+								</div>
+								<div class="form-group">
+									<label for="booking-date">Date:</label>
+									<input type="date" id="booking-date">
+								</div>
+								<div class="form-group">
+									<label for="booking-time">Time:</label>
+									<input type="time" id="booking-time">
+								</div>
+								<div class="form-group">
+									<label for="booking-token">Auth Token (required):</label>
+									<input type="text" id="booking-token" placeholder="Paste your auth token here">
+								</div>
+							`;
+						} else if (endpoint === "bookings-delete") {
+							dynamicForm.innerHTML += `
+								<div class="form-group">
+									<label for="booking-token">Auth Token (required):</label>
+									<input type="text" id="booking-token" placeholder="Paste your auth token here">
+								</div>
+							`;
+						} else {
+							dynamicForm.innerHTML += `
+								<div class="form-group">
+									<label for="booking-token">Auth Token (required):</label>
+									<input type="text" id="booking-token" placeholder="Paste your auth token here">
+								</div>
+							`;
+						}
+						break;
+					case "bookings-create":
+						dynamicForm.innerHTML = `
+							<div class="form-group">
+								<label for="booking-name">Name:</label>
+								<input type="text" id="booking-name" placeholder="Enter guest name">
+							</div>
+							<div class="form-group">
+								<label for="booking-guests">Number of Guests:</label>
+								<input type="number" id="booking-guests" placeholder="Enter number of guests">
+							</div>
+							<div class="form-group">
+								<label for="booking-date">Date:</label>
+								<input type="date" id="booking-date">
+							</div>
+							<div class="form-group">
+								<label for="booking-time">Time:</label>
+								<input type="time" id="booking-time">
+							</div>
+							<div class="form-group">
+								<label for="booking-token">Auth Token (required):</label>
+								<input type="text" id="booking-token" placeholder="Paste your auth token here">
+							</div>
+						`;
+						break;
 				}
 			}
 
@@ -373,11 +564,47 @@
 
 				try {
 					switch (endpoint) {
-						case "menu":
-							url = "/api/menu/";
+						case "register":
+							url = "/api/auth/register/";
+							method = "POST";
+							const regUsername = document.getElementById("reg-username").value;
+							const regPassword = document.getElementById("reg-password").value;
+							const regEmail = document.getElementById("reg-email").value;
+							const regFirstName =
+								document.getElementById("reg-first-name").value;
+							const regLastName =
+								document.getElementById("reg-last-name").value;
+							if (!regUsername || !regPassword || !regEmail) {
+								responseDiv.innerHTML =
+									'<div class="error">Please fill all required fields</div>';
+								return;
+							}
+							body = JSON.stringify({
+								username: regUsername,
+								password: regPassword,
+								email: regEmail,
+								first_name: regFirstName || "",
+								last_name: regLastName || "",
+							});
+							headers["X-CSRFToken"] = getCSRFToken();
 							break;
-						case "bookings":
-							url = "/api/bookings/";
+						case "login":
+							url = "/api/auth/login/";
+							method = "POST";
+							const loginUsername =
+								document.getElementById("login-username").value;
+							const loginPassword =
+								document.getElementById("login-password").value;
+							if (!loginUsername || !loginPassword) {
+								responseDiv.innerHTML =
+									'<div class="error">Please enter username and password</div>';
+								return;
+							}
+							body = JSON.stringify({
+								username: loginUsername,
+								password: loginPassword,
+							});
+							headers["X-CSRFToken"] = getCSRFToken();
 							break;
 						case "token-auth":
 							url = "/api-token-auth/";
@@ -392,32 +619,184 @@
 							body = JSON.stringify({ username, password });
 							headers["X-CSRFToken"] = getCSRFToken();
 							break;
-						case "auth-users":
-							url = "/api/auth/users/";
-							const token = document.getElementById("token").value;
-							if (!token) {
+						case "menu-list":
+							url = "/api/menu/";
+							break;
+						case "menu-detail":
+							const menuDetailId = document.getElementById("menu-id").value;
+							if (!menuDetailId) {
+								responseDiv.innerHTML =
+									'<div class="error">Please enter menu item ID</div>';
+								return;
+							}
+							url = `/api/menu/${menuDetailId}/`;
+							break;
+						case "menu-create":
+							url = "/api/menu/";
+							method = "POST";
+							const menuTitle = document.getElementById("menu-title").value;
+							const menuPrice = document.getElementById("menu-price").value;
+							const menuInventory =
+								document.getElementById("menu-inventory").value;
+							const menuToken = document.getElementById("menu-token").value;
+							if (!menuTitle || !menuPrice || !menuInventory || !menuToken) {
+								responseDiv.innerHTML =
+									'<div class="error">Please fill all required fields</div>';
+								return;
+							}
+							body = JSON.stringify({
+								title: menuTitle,
+								price: menuPrice,
+								inventory: menuInventory,
+							});
+							headers["Authorization"] = `Token ${menuToken}`;
+							headers["X-CSRFToken"] = getCSRFToken();
+							break;
+						case "menu-update":
+							const menuUpdateId = document.getElementById("menu-id").value;
+							const menuUpdateTitle =
+								document.getElementById("menu-title").value;
+							const menuUpdatePrice =
+								document.getElementById("menu-price").value;
+							const menuUpdateInventory =
+								document.getElementById("menu-inventory").value;
+							const menuUpdateToken =
+								document.getElementById("menu-token").value;
+							if (
+								!menuUpdateId ||
+								!menuUpdateTitle ||
+								!menuUpdatePrice ||
+								!menuUpdateToken
+							) {
+								responseDiv.innerHTML =
+									'<div class="error">Please fill all required fields</div>';
+								return;
+							}
+							url = `/api/menu/${menuUpdateId}/`;
+							method = "PUT";
+							body = JSON.stringify({
+								title: menuUpdateTitle,
+								price: menuUpdatePrice,
+								inventory: menuUpdateInventory,
+							});
+							headers["Authorization"] = `Token ${menuUpdateToken}`;
+							headers["X-CSRFToken"] = getCSRFToken();
+							break;
+						case "menu-delete":
+							const menuDeleteId = document.getElementById("menu-id").value;
+							const menuDeleteToken =
+								document.getElementById("menu-token").value;
+							if (!menuDeleteId || !menuDeleteToken) {
+								responseDiv.innerHTML =
+									'<div class="error">Please enter menu item ID and token</div>';
+								return;
+							}
+							url = `/api/menu/${menuDeleteId}/`;
+							method = "DELETE";
+							headers["Authorization"] = `Token ${menuDeleteToken}`;
+							headers["X-CSRFToken"] = getCSRFToken();
+							break;
+						case "bookings-list":
+							url = "/api/bookings/";
+							const bookingListToken =
+								document.getElementById("booking-token").value;
+							if (!bookingListToken) {
 								responseDiv.innerHTML =
 									'<div class="error">Please enter your auth token</div>';
 								return;
 							}
-							headers["Authorization"] = `Token ${token}`;
+							headers["Authorization"] = `Token ${bookingListToken}`;
 							break;
-						case "auth-register":
-							url = "/api/auth/users/";
-							method = "POST";
-							const regUsername = document.getElementById("reg-username").value;
-							const regPassword = document.getElementById("reg-password").value;
-							const regEmail = document.getElementById("reg-email").value;
-							if (!regUsername || !regPassword || !regEmail) {
+						case "bookings-detail":
+							const bookingDetailId =
+								document.getElementById("booking-id").value;
+							const bookingDetailToken =
+								document.getElementById("booking-token").value;
+							if (!bookingDetailId || !bookingDetailToken) {
 								responseDiv.innerHTML =
-									'<div class="error">Please fill all registration fields</div>';
+									'<div class="error">Please enter booking ID and token</div>';
+								return;
+							}
+							url = `/api/bookings/${bookingDetailId}/`;
+							headers["Authorization"] = `Token ${bookingDetailToken}`;
+							break;
+						case "bookings-create":
+							url = "/api/bookings/";
+							method = "POST";
+							const bookingName = document.getElementById("booking-name").value;
+							const bookingGuests =
+								document.getElementById("booking-guests").value;
+							const bookingDate = document.getElementById("booking-date").value;
+							const bookingTime = document.getElementById("booking-time").value;
+							const bookingToken =
+								document.getElementById("booking-token").value;
+							if (
+								!bookingName ||
+								!bookingGuests ||
+								!bookingDate ||
+								!bookingTime ||
+								!bookingToken
+							) {
+								responseDiv.innerHTML =
+									'<div class="error">Please fill all required fields</div>';
 								return;
 							}
 							body = JSON.stringify({
-								username: regUsername,
-								password: regPassword,
-								email: regEmail,
+								name: bookingName,
+								no_of_guests: bookingGuests,
+								booking_date: bookingDate,
+								booking_time: bookingTime,
 							});
+							headers["Authorization"] = `Token ${bookingToken}`;
+							headers["X-CSRFToken"] = getCSRFToken();
+							break;
+						case "bookings-update":
+							const bookingUpdateId =
+								document.getElementById("booking-id").value;
+							const bookingUpdateName =
+								document.getElementById("booking-name").value;
+							const bookingUpdateGuests =
+								document.getElementById("booking-guests").value;
+							const bookingUpdateDate =
+								document.getElementById("booking-date").value;
+							const bookingUpdateTime =
+								document.getElementById("booking-time").value;
+							const bookingUpdateToken =
+								document.getElementById("booking-token").value;
+							if (
+								!bookingUpdateId ||
+								!bookingUpdateName ||
+								!bookingUpdateGuests ||
+								!bookingUpdateToken
+							) {
+								responseDiv.innerHTML =
+									'<div class="error">Please fill all required fields</div>';
+								return;
+							}
+							url = `/api/bookings/${bookingUpdateId}/`;
+							method = "PUT";
+							body = JSON.stringify({
+								name: bookingUpdateName,
+								no_of_guests: bookingUpdateGuests,
+								booking_date: bookingUpdateDate,
+								booking_time: bookingUpdateTime,
+							});
+							headers["Authorization"] = `Token ${bookingUpdateToken}`;
+							headers["X-CSRFToken"] = getCSRFToken();
+							break;
+						case "bookings-delete":
+							const bookingDeleteId =
+								document.getElementById("booking-id").value;
+							const bookingDeleteToken =
+								document.getElementById("booking-token").value;
+							if (!bookingDeleteId || !bookingDeleteToken) {
+								responseDiv.innerHTML =
+									'<div class="error">Please enter booking ID and token</div>';
+								return;
+							}
+							url = `/api/bookings/${bookingDeleteId}/`;
+							method = "DELETE";
+							headers["Authorization"] = `Token ${bookingDeleteToken}`;
 							headers["X-CSRFToken"] = getCSRFToken();
 							break;
 					}
@@ -435,14 +814,14 @@
 					if (response.ok) {
 						responseDiv.innerHTML = `
 							<div class="success">
-								<strong>Status: ${response.status} ${response.statusText}</strong>
+								<strong>✓ Status: ${response.status} ${response.statusText}</strong>
 								<div class="response-box">${JSON.stringify(data, null, 2)}</div>
 							</div>
 						`;
 					} else {
 						responseDiv.innerHTML = `
 							<div class="error">
-								<strong>Status: ${response.status} ${response.statusText}</strong>
+								<strong>✗ Status: ${response.status} ${response.statusText}</strong>
 								<div class="response-box">${JSON.stringify(data, null, 2)}</div>
 							</div>
 						`;
